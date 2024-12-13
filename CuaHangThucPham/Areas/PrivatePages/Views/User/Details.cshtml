@@ -1,0 +1,25 @@
+﻿@model CuaHangThucPham.Models.User
+
+@{
+    ViewBag.Title = "Chi tiết người dùng";
+}
+
+<h2>Chi tiết người dùng</h2>
+
+<div>
+    <h4>@Model.Username</h4>
+    <dl class="dl-horizontal">
+        <dt>Email:</dt>
+        <dd>@Model.Email</dd>
+
+        <dt>Ngày sinh:</dt>
+        <dd>@Model.BirthDate?.ToString("dd/MM/yyyy")</dd>
+
+        <dt>Giới tính:</dt>
+        <dd>@Model.Gender</dd>
+    </dl>
+</div>
+
+<p>
+    <a href="@Url.Action("Index", "User", new { area = "PrivatePages" })" class="btn btn-primary">Quay lại</a>
+</p>

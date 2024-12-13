@@ -1,0 +1,114 @@
+﻿@model CuaHangThucPham.Models.Product
+@using CuaHangThucPham.Models
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<section class="hero hero-normal">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-3">
+                <div class="hero__categories">
+                    <div class="hero__categories__all">
+                        <i class="fa fa-bars"></i>
+                        <span>Tất cả sản phẩm</span>
+                    </div>
+                    <ul>
+                        @foreach (var category in Common.getCategories())
+                        {
+                            <li>
+                                <a href="@Url.Action("Index", "Shop", new { categoryID = category.CategoryID })">
+                                    @category.CategoryName
+                                </a>
+                            </li>
+                        }
+                    </ul>
+                </div>
+            </div>
+            <div class="col-lg-9">
+                <div class="hero__search">
+                    <div class="hero__search__form">
+                        <form action="#">
+                            <input type="text" placeholder="Bạn cần gì?">
+                            <button type="submit" class="site-btn">TÌM KIẾM</button>
+                        </form>
+                    </div>
+                    <div class="hero__search__phone">
+                        <div class="hero__search__phone__icon">
+                            <i class="fa fa-phone"></i>
+                        </div>
+                        <div class="hero__search__phone__text">
+                            <h5>0964505942</h5>
+                            <span>hỗ trợ 24/7(h)</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<section class="product-details spad">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-6 col-md-6">
+                <div class="product__details__pic">
+                    <div class="product__details__pic__item">
+                        <img class="product__details__pic__item--large"
+                             src="@Url.Content("~/img/categories/" + Model.img)" alt="@Model.ProductName">
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6 col-md-6">
+                <div class="product__details__text">
+                    <h3>@Model.ProductName</h3>
+                    <div class="product__details__price">@Model.Price.ToString("N0", new System.Globalization.CultureInfo("vi-VN")) VND</div>
+                    <p>
+                        @Model.Description
+                    </p>
+                    <div class="product__details__quantity">
+                        <div class="quantity">
+                            <div class="pro-qty">
+                                <input type="number" id="quantity" name="quantity" value="1" min="1">
+                            </div>
+                        </div>
+                    </div>
+                    <a href="javascript:void(0)" class="primary-btn" id="addToCartButton">THÊM VÀO GIỎ HÀNG</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    document.getElementById('addToCartButton').addEventListener('click', function () {
+        const quantity = parseInt(document.getElementById('quantity').value, 10);
+        const productId = @Model.ProductID; // Sử dụng Razor để nhúng ProductID
+
+        if (quantity <= 0) {
+            alert('Số lượng phải lớn hơn 0.');
+            return;
+        }
+
+        fetch('@Url.Action("AddToCart", "Shop")', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ productId, quantity })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                alert(data.message);
+                location.reload(); // Tải lại trang để cập nhật giỏ hàng
+            } else {
+                alert(data.message);
+            }
+        });
+    });
+});
+</script>

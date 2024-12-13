@@ -1,0 +1,106 @@
+﻿@model IEnumerable<CuaHangThucPham.Models.CartItemViewModel>
+
+@{
+    ViewBag.Title = "Danh sách sản phẩm";
+}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <h3 class="card-title">Danh sách sản phẩm</h3>
+                    <button class="btn btn-primary btn-sm" onclick="addProduct()">Thêm sản phẩm mới</button>
+                </div>
+                <div class="card-body">
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Tên sản phẩm</th>
+                                <th>Mô tả</th>
+                                <th>Giá (VND)</th>
+                                <th>Danh mục</th>
+                                <th>Hình ảnh</th>
+                                <th>Thao tác</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @if (Model != null && Model.Any())
+                            {
+                                foreach (var item in Model)
+                                {
+                                    <tr>
+                                        <td>@item.ProductID</td>
+                                        <td>@item.ProductName</td>
+                                        <td>@item.Description</td>
+                                        <td>@item.Price.ToString("N0")</td>
+                                        <td>@item.CategoryName</td>
+                                        <td>
+                                            <img src="@Url.Content("~/img/categories/" + item.img)" alt="@item.ProductName" width="50">
+                                        </td>
+                                        <td>
+
+                                            <button class="btn btn-custom btn-edit" onclick="editProduct(@item.ProductID)">
+                                                <i class="fas fa-edit"></i> Chỉnh sửa
+                                            </button>
+                                            <button class="btn btn-custom btn-delete" onclick="deleteProduct(@item.ProductID)">
+                                                <i class="fas fa-trash"></i> Xóa
+                                            </button>
+                                        </td>
+
+                                    </tr>
+                                }
+                            }
+                            else
+                            {
+                                <tr>
+                                    <td colspan="8">Không có sản phẩm nào để hiển thị.</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<style>
+    .btn-custom {
+        padding: 6px 12px; /* Điều chỉnh kích thước padding để nút nhỏ hơn */
+        font-size: 12px; /* Kích cỡ chữ nhỏ */
+        border-radius: 4px; /* Viền bo tròn cho nút */
+        border: none; /* Xóa viền mặc định */
+        color: #fff; /* Màu chữ */
+        text-transform: uppercase; /* Chữ in hoa */
+        font-weight: bold; /* Chữ đậm */
+        cursor: pointer; /* Con trỏ chuột khi di chuột qua */
+        display: inline-flex; /* Căn chỉnh nội dung nút */
+        align-items: center; /* Căn chỉnh nội dung nút */
+        gap: 5px; /* Khoảng cách giữa biểu tượng và chữ */
+        transition: background-color 0.3s ease; /* Hiệu ứng chuyển màu nền */
+    }
+
+    .btn-edit {
+        background-color: #f0ad4e; /* Màu nền cam */
+    }
+
+        .btn-edit:hover {
+            background-color: #ec971f; /* Màu nền cam khi hover */
+        }
+
+    .btn-delete {
+        background-color: #d9534f; /* Màu nền đỏ */
+    }
+
+        .btn-delete:hover {
+            background-color: #c9302c; /* Màu nền đỏ khi hover */
+        }
+
+    .btn-custom i {
+        font-size: 14px; /* Kích cỡ biểu tượng nhỏ */
+    }
+</style>
+
+

@@ -1,0 +1,35 @@
+﻿@model IEnumerable<CuaHangThucPham.Models.User>
+
+@{
+    ViewBag.Title = "Danh sách người dùng";
+}
+
+<h2>Danh sách người dùng</h2>
+
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>UserId</th>
+            <th>Username</th>
+            <th>Email</th>
+            <th>BirthDate</th>
+            <th>Gender</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var user in Model)
+        {
+            <tr>
+                <td>@user.UserId</td>
+                <td>@user.Username</td>
+                <td>@user.Email</td>
+                <td>@user.BirthDate?.ToString("dd/MM/yyyy")</td>
+                <td>@user.Gender</td>
+                <td>
+                    <a href="@Url.Action("Details", "User", new { area = "PrivatePages", id = user.UserId })" class="btn btn-info btn-sm">Chi tiết</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

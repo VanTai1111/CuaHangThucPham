@@ -1,0 +1,179 @@
+﻿@using CuaHangThucPham.Models
+
+@model IEnumerable<CartItemViewModel>
+
+@{
+    ViewBag.Title = "Giỏ Hàng";
+}
+
+<section class="hero hero-normal">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-3">
+                <div class="hero__categories">
+                    <div class="hero__categories__all">
+                        <i class="fa fa-bars"></i>
+                        <span>Tất cả sản phẩm</span>
+                    </div>
+                    <ul>
+                        @foreach (var category in Common.getCategories())
+                        {
+                            <li>
+                                <a href="@Url.Action("Index", "Shop", new { categoryID = category.CategoryID })">
+                                    @category.CategoryName
+                                </a>
+                            </li>
+                        }
+                    </ul>
+                </div>
+            </div>
+            <div class="col-lg-9">
+                <div class="hero__search">
+                    <div class="hero__search__form">
+                        <form action="#">
+                            <input type="text" placeholder="Bạn cần gì?">
+                            <button type="submit" class="site-btn">TÌM KIẾM</button>
+                        </form>
+                    </div>
+                    <div class="hero__search__phone">
+                        <div class="hero__search__phone__icon">
+                            <i class="fa fa-phone"></i>
+                        </div>
+                        <div class="hero__search__phone__text">
+                            <h5>0964505942</h5>
+                            <span>hỗ trợ 24/7(h)</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<!-- Shoping Cart Section Begin -->
+<section class="shoping-cart spad">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="shoping__cart__table">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th class="shoping__product">Sản phẩm</th>
+                                <th>Giá</th>
+                                <th>Số lượng</th>
+                                <th>Tổng giá</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @if (Model.Any())
+                            {
+                                foreach (var item in Model)
+                                {
+                                    <tr>
+                                        <td class="shoping__cart__item">
+                                            <img src="@Url.Content("~/img/categories/" + item.img)" alt="@item.ProductName">
+                                            <h5>@item.ProductName</h5>
+                                        </td>
+                                        <td class="shoping__cart__price">
+                                            @item.Price.ToString("N0", new System.Globalization.CultureInfo("vi-VN")) VND
+                                        </td>
+                                        <td class="shoping__cart__quantity">
+                                            <div class="quantity">
+                                                <div class="pro-qty">
+                                                    <input type="text" value="@item.Quantity" readonly data-product-id="@item.ProductID">
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td class="shoping__cart__total">
+                                            @item.Total.ToString("N0", new System.Globalization.CultureInfo("vi-VN")) VND
+                                        </td>
+                                        <td class="shoping__cart__item__close">
+                                            <a href="@Url.Action("RemoveFromCart", "Shop", new { productId = item.ProductID })" class="btn btn-danger">
+                                                <span class="icon_close"></span>
+                                            </a>
+                                        </td>
+                                    </tr>
+                                }
+                            }
+                            else
+                            {
+                                <tr>
+                                    <td colspan="5">Giỏ hàng của bạn đang trống.</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="shoping__cart__btns">
+                    <a href="@Url.Action("Index", "Shop")" class="primary-btn cart-btn">TIẾP TỤC MUA HÀNG</a>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="shoping__continue">
+                    <div class="shoping__discount">
+                        <h5>Mã Giảm Giá (nếu có)</h5>
+                        <form action="#">
+                            <input type="text" placeholder="Nhập mã giảm giá">
+                            <button type="submit" class="site-btn">XÁC NHẬN</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="shoping__checkout">
+                    <h5>Thanh Toán</h5>
+                    <ul>
+                        <li>Tổng thành tiền <span>@Model.Sum(item => item.Total).ToString("N0", new System.Globalization.CultureInfo("vi-VN")) VND</span></li>
+                    </ul>
+                    <a href="@Url.Action("Checkout", "Order")" class="primary-btn">THANH TOÁN</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    const updateCartItem = (productId, quantity) => {
+        fetch('@Url.Action("UpdateCartItem", "Shop")', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ productId, quantity })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                location.reload(); // Tải lại trang để cập nhật thông tin giỏ hàng
+            } else {
+                alert(data.message); // Hiển thị thông báo lỗi nếu có
+            }
+        });
+    };
+
+    document.querySelectorAll('.qtybtn').forEach(button => {
+        button.addEventListener('click', function () {
+            const input = this.parentElement.querySelector('input');
+            let quantity = parseInt(input.value, 10);
+            const productId = input.dataset.productId;
+
+            if (this.classList.contains('inc')) {
+                quantity += 1;
+            } else if (this.classList.contains('dec') && quantity > 1) {
+                quantity -= 1;
+            }
+
+            input.value = quantity;
+            updateCartItem(productId, quantity);
+        });
+    });
+});
+</script>

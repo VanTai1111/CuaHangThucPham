@@ -1,0 +1,68 @@
+﻿@model CuaHangThucPham.Models.CheckoutViewModel
+
+<section class="checkout spad">
+    <div class="container">
+        <div class="checkout__form">
+            <h4>Chi Tiết Đơn Hàng</h4>
+            <form action="@Url.Action("PlaceOrder", "Order")" method="post">
+                <div class="row">
+                    <div class="col-lg-8 col-md-6">
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <div class="checkout__input">
+                                    <p>Họ<span>*</span></p>
+                                    <input type="text" name="LastName" value="@Model.LastName" required>
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="checkout__input">
+                                    <p>Tên<span>*</span></p>
+                                    <input type="text" name="FirstName" value="@Model.FirstName" required>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="checkout__input">
+                            <p>Thành phố<span>*</span></p>
+                            <input type="text" name="ShippingCity" value="@Model.ShippingCity" required>
+                        </div>
+                        <div class="checkout__input">
+                            <p>Địa chỉ cụ thể<span>*</span></p>
+                            <input type="text" name="ShippingAddress" placeholder="Tên đường, số nhà...." value="@Model.ShippingAddress" required>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <div class="checkout__input">
+                                    <p>Số điện thoại<span>*</span></p>
+                                    <input type="text" name="Phone" value="@Model.Phone" required>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="checkout__input">
+                            <p>Lưu ý</p>
+                            <input type="text" name="Notes" placeholder="Bạn có mong muốn gì đối với đơn hàng này không." value="@Model.Notes">
+                        </div>
+                    </div>
+                    <div class="col-lg-4 col-md-6">
+                        <div class="checkout__order">
+                            <h4>Đơn hàng của bạn</h4>
+                            <div class="checkout__order__products">Sản phẩm <span>Tổng tiền</span></div>
+                            <ul>
+                                @foreach (var item in Model.CartItems)
+                                {
+                                    <li>@item.ProductName *@item.Quantity <span>@item.Total.ToString("N0", new System.Globalization.CultureInfo("vi-VN")) VND</span></li>
+                                }
+                            </ul>
+                            <div class="checkout__order__total">
+                                Tổng thành tiền
+                                <span>@Model.CartItems.Sum(item => item.Total).ToString("N0", new System.Globalization.CultureInfo("vi-VN")) VND</span>
+                            </div>
+                            <!-- Trường ẩn để gửi tổng tiền -->
+                            <input type="hidden" name="TotalAmount" value="@Model.CartItems.Sum(item => item.Total)" />
+                            <button type="submit" class="site-btn">ĐẶT HÀNG</button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</section>

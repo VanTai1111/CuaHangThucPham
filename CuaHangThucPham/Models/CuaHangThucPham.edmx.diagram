@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="cd0705abf4264477a2a45dfbcc515aea" Name="Diagram1" ZoomLevel="72">
+        <EntityTypeShape EntityType="CuaHangTrucTuyenModel.Category" Width="1.5" PointX="0.75" PointY="4" />
+        <EntityTypeShape EntityType="CuaHangTrucTuyenModel.OrderDetail" Width="1.5" PointX="5.25" PointY="0.75" />
+        <EntityTypeShape EntityType="CuaHangTrucTuyenModel.Order" Width="1.5" PointX="3" PointY="7.375" />
+        <EntityTypeShape EntityType="CuaHangTrucTuyenModel.Payment" Width="1.5" PointX="5.25" PointY="8.25" />
+        <EntityTypeShape EntityType="CuaHangTrucTuyenModel.Product" Width="1.5" PointX="3" PointY="3.5" />
+        <EntityTypeShape EntityType="CuaHangTrucTuyenModel.ShoppingCart" Width="1.5" PointX="5.25" PointY="3.875" />
+        <EntityTypeShape EntityType="CuaHangTrucTuyenModel.User" Width="1.5" PointX="0.75" PointY="8" />
+        <AssociationConnector Association="CuaHangTrucTuyenModel.FK_Products_Categories" />
+        <AssociationConnector Association="CuaHangTrucTuyenModel.FK__OrderDeta__Order__3A4CA8FD" />
+        <AssociationConnector Association="CuaHangTrucTuyenModel.FK__OrderDeta__Produ__3B40CD36" />
+        <AssociationConnector Association="CuaHangTrucTuyenModel.FK__Orders__UserID__3587F3E0" />
+        <AssociationConnector Association="CuaHangTrucTuyenModel.FK__Payments__OrderI__3E1D39E1" />
+        <AssociationConnector Association="CuaHangTrucTuyenModel.FK__ShoppingC__Produ__70DDC3D8" />
+        <AssociationConnector Association="CuaHangTrucTuyenModel.FK__ShoppingC__UserI__6FE99F9F" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>
